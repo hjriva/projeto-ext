@@ -29,60 +29,87 @@
            "params": ["inquire-email"] 
         
     }]
-}, {
+},  {
+
+    "id": "link-email",
+    "msgs": [
+        "Hmmmm. Ok. Espero que esteja certinho.",
+        "Você vai receber um link por e-mail. Por favor, clique nele. Não esqueça de olhar o spam!"
+    ], 
+    "command": "cadastrarUsuario",
+    "params": []
+
+},
+
+
+
+{
     "id": "inquire-email",
     "msgs": [
-        "Qual é o seu e-mail?"
-    ]
+        "Obrigado!",
+        "Qual é o seu e-mail? Por favor, digite abaixo."
+    ],
+    "command": "mail_input",
+    "params": []
 },
 {
     "id": "inquire-1",
     "msgs": [
-        "Qual é o seu nome?"
+        "Oh, obrigado por voltar! Só preciso coletar algumas informações, antes de começarmos",
+        "Qual é o seu nome? Digite abaixo, por favor."
     ]
 },
 {
     "id": "inquire-2",
     "msgs": [
-        "Quantos anos você tem? Responda só com números, por favor."
+        "Quantos anos você tem?",  
+        "Responda só com números, por favor."
     ]
 }, 
 {
     "id": "seq-cadastro1",
-    "msgs": ["Hmmm, mas será que você vai conseguir me ajudar mesmo? Você sequer já leu algum livro antes?"],
+    "msgs": ["Muito jovem... Será que você vai conseguir me ajudar mesmo?",
+     "Você sequer já leu algum livro antes?"],
     "options": [
         {
-            "1": {
-                "text": "Nunca li nada.",
-                "command": "return"
+            
+                "texto": "Nunca li nada.",
+                "command": "avaliarEscolha", "params": ["Não leu"]
             },
-            "2": {
-                "text": "Já li um pouco.",
-                "command": "return"
+             {
+                "texto": "Já li um pouco.",
+                "command": "avaliarEscolha", "params": ["Leu pouco"]
             },
-            "3": {
-                "text": "Eu leio bastante.",
-                "command": "return"
+           {
+                "texto": "Eu leio bastante.",
+                "command": "avaliarEscolha", "params": ["Leu bastante"]
             }
-        }
+        
     ]
 }, {
     "id": "seq-cadastro2",
     "msgs": [
-        "Hmmm, será que você consegue me ajudar? Que tipo de coisas você já leu e gostou antes?"
+        "E será que você consegue me ajudar?", "Que tipo de coisas você já leu e gostou antes?"
     ],
     "options": ""
 }, {
     "id": "seq-cadastro3", 
     "msgs": [
-        "Sério? Nadinha? Mas, se você fosse ler algo, o que te interessaria?"
+        "Sério? Nadinha?", "Mas, se você fosse ler algo, o que te interessaria?"
     ],
     "options": ""
 }, 
 {
+    "id": "finaliza_cadastro",
+    "msgs": [
+        "Obrigado pelas informações.", "Aguarde um momento, por favor."
+    ]
+},
+
+{
     "id": "nova-missao-1",
     "msgs": ["Então, vamos ver se você vai conseguir me ajudar. Aqui vai o primeiro desafio. O livro que você precisa ler é: ", 
-            "Me avisa aí quando terminar de ler, que eu te mando as perguntas."
+            "Me avisa aí quando terminar de ler, que eu te mando as perguntas. É só falar comigo aqui no chat."
     ] 
 },
     {
@@ -135,8 +162,26 @@
             ],
             "options": [
                 {
-                    "text": "Ok, mudei de ideia, ajudo sim."
+                    "texto": "Ok, mudei de ideia, ajudo sim.",
+                     "command": "iniciar_seq",
+                    "params": ["inquire-email"] 
+                },
+                
+                {
+                    "texto": "Não, de jeito nenhum!",
+                    "command": "iniciar_seq",
+                    "params": ["negado"] 
                 }
             ]
+        },
+        {
+            "id": "erro-idade",
+            "msgs": [
+                "Opa! Deu agum erro aqui.",
+                "Por favor, vamos tentar de novo. Só números agora."
+            ],
+            "command": "iniciar_seq",
+            "params": ["inquire-2"]
         }
+
 ]
