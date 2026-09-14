@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=close" />
+</head>
+<body>
+    
+    <h1>Adicionar livro novo</h1>
+    <form>
+
+        <div class="campo">
+        <label for="titulo" >Título</label>
+        <input type="text" name="titulo" id="titulo" >
+        </div>
+        <div class="campo">
+        <label for="autor">Autor: </label>
+        <input type="text" name="autor" id="autor" >
+        </div>
+        
+        <!--<div class="campo">
+        <label for="capa"></label>
+        <input type="file" name="" id="capa" required>
+        </div> -->
+
+        <div class="campo">
+        <label for="idademin">Idade mínima:<label>
+        <input type="number" name="" id="idademin" >
+        
+        </div>
+
+        <div class="campo">
+        <label for="idademax">Idade máxima:<label>
+        <input type="number" name="" id="idademax">
+        </div>
+
+
+        <div class="campo">
+        <label for="gen" >Gênero literário:</label>
+        <input type="text" name="" id="gen">
+        
+        <div id="generos-escolhidos"></div>
+        </div>
+
+      
+
+        <h2>Adicionar perguntas:</h2>
+        
+            <div id="lista-de-perguntas">
+            <div class="form_pergunta" id="form_1">
+                  <!--Talvez não precise de action, ver posteriormente-->
+                <form class="forminterno">
+                  <span class="numero-pergunta">1)</span>
+                  <label for="question1">Pergunta:</label>
+                  <input type="text" name="enunciado-1" id="enunciado-1" class="input_enunciado">
+
+                  <div class="alternativas">
+                  <div class="campo alternativa">
+                    <!--Essa div existe para conseguirmos deixar uma pergunta embaixo da outra 
+            sem encher de br,
+            provavelmente vai ser adicionado em outros elementos -->
+                    <label for="alt-a-1"> a) </label>
+                    <input type="text" name="alt-a" class="alt-a" id="alt-a-1">
+                    <!--O id desses inputs precisa ter um número, pois serão gerados mais deles dinamicamente
+        para serem unicos -->
+                    <input type="radio" name="radio-alternativa-1" value="a">
+                    <!--O value do radio precisa ser a letra da alternativa, para conseguirmos armazenar a opção correta de cada pergunta.-->
+                  </div>
+
+                  <div class="campo alternativa">
+                    <label for="alt-b-1"> b) </label>
+                    <input type="text" name="alt-b" class="alt-b" id="alt-b-1">
+                    <input type="radio" name="radio-alternativa-1" value="b">
+                    
+                  </div>
+                    </div>
+                    <input type="button" value="adicionar alternativa" class="add-alternativa">
+
+                  <div class="campo">
+                    <textarea name="explicacao-1" id="explicacao-1" class="explicacao-text" placeholder="Explicacao opcional"></textarea>
+                  </div>
+                  </form>
+                
+                  
+
+        </div>
+        </div>
+            <div id="add-pergunta">+</div>
+          <input type="submit" value="Salvar" id="salvar-bd">
+    </form>
+    <script src="index.js" defer></script>
+</body>
+</html>

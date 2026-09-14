@@ -1,0 +1,142 @@
+[
+{
+    
+    "id": "seq-inicial",
+    "msgs": [
+        "Oi!",
+        "Ah, estou tão feliz que consegui falar com alguém.",
+        "Por favor, não corte o contato agora. Preste bem atenção no que vou te contar.",
+        "Eu estou preso em uma nave espacial.",
+        "É, eu sei, parece loucura. Pode rir. Você não estaria rindo se estivesse aqui!",
+        "Nosso computador se rebelou contra nossa tripulação e assumiu o controle. Nossas coordenadas foram adulteradas e estamos flutuando para cada vez mais longe do nosso planeta natal...",
+        "Estamos tentando desligá-lo para retomar o controle da nave, mas o sistema de segurança requer que nós respondamos algumas perguntas para provarmos que somos humanos e todas elas são sobre livros.",
+
+        "Temos aqui profissionais de botânica, de ciência, astrofísica e matemática... O problema é que não temos uma biblioteca aqui.",
+
+        "Você é nossa única esperança. Se você conseguir nos ajudar pesquisando e encontrando as respostas para nós, o nosso planeta será eternamente grato.",
+
+        "Se dispõe a me ajudar?"
+    ],
+    "options" : [
+        {
+        "texto": "Não",
+          "command": "iniciar_seq",
+           "params": ["negado"] 
+        },{
+       "texto": "Sim",
+
+            "command": "iniciar_seq",
+           "params": ["inquire-email"] 
+        
+    }]
+}, {
+    "id": "inquire-email",
+    "msgs": [
+        "Qual é o seu e-mail?"
+    ]
+},
+{
+    "id": "inquire-1",
+    "msgs": [
+        "Qual é o seu nome?"
+    ]
+},
+{
+    "id": "inquire-2",
+    "msgs": [
+        "Quantos anos você tem? Responda só com números, por favor."
+    ]
+}, 
+{
+    "id": "seq-cadastro1",
+    "msgs": ["Hmmm, mas será que você vai conseguir me ajudar mesmo? Você sequer já leu algum livro antes?"],
+    "options": [
+        {
+            "1": {
+                "text": "Nunca li nada.",
+                "command": "return"
+            },
+            "2": {
+                "text": "Já li um pouco.",
+                "command": "return"
+            },
+            "3": {
+                "text": "Eu leio bastante.",
+                "command": "return"
+            }
+        }
+    ]
+}, {
+    "id": "seq-cadastro2",
+    "msgs": [
+        "Hmmm, será que você consegue me ajudar? Que tipo de coisas você já leu e gostou antes?"
+    ],
+    "options": ""
+}, {
+    "id": "seq-cadastro3", 
+    "msgs": [
+        "Sério? Nadinha? Mas, se você fosse ler algo, o que te interessaria?"
+    ],
+    "options": ""
+}, 
+{
+    "id": "nova-missao-1",
+    "msgs": ["Então, vamos ver se você vai conseguir me ajudar. Aqui vai o primeiro desafio. O livro que você precisa ler é: ", 
+            "Me avisa aí quando terminar de ler, que eu te mando as perguntas."
+    ] 
+},
+    {
+        "id": "missao-2",
+        "msgs": ["Muito bem! Mas isso não é o fim. O computador ainda está fazendo perguntas que precisam ser respondidas. O próximo desafio é: ", "O esquema é o mesmo. Me avisa quando terminar de ler o livro."]
+    },
+
+    {
+        "id": "missao-em-andamento",
+        "msgs": ["Olá! Como está progredindo em sua missão? Já terminou de ler o livro para responder as perguntas? Sem pressão, mas estamos ansiosos por aqui!"
+        
+        ],
+        "options": {
+            "1": {
+                "text": "Ainda não terminei."
+            },
+            "2": {
+                "text": "Já terminei o livro! Pode trazer as perguntas!"
+            }
+        }
+    },
+    {
+        "id": "missao-ongoing",
+        "msgs": ["Tudo bem! No seu tempo! Estamos muito gratos pela sua ajuda."]
+        
+    },
+    {
+        "id": "missao-terminada",
+        "msgs": ["É assim que eu gosto de ouvir! Vou enviar as perguntas na sequência. Por favor, leia com atenção."]
+    },
+        {
+            "id": "primeira-conquista",
+            "msgs": ["Parabéns, você obteve uma conquista!"]
+        },
+        {
+            "id": "incorreto",
+            "msgs":[ "Ah, não! Meu computador identificou que tem alguma coisa errada. Por favor, revise. Temos algumas tentativas restantes."]
+             
+        
+        }, {
+            "id": "correto",
+            "msgs": ["Está tudo correto! Conseguimos avançar para a próxima etapa.", "Parabéns por mais uma leitura concluída!"]
+        },
+        {"id": "missao-cancelada", 
+        "msgs": ["Essa não. Algo deu errado. Usamos todas as nossas tentativas sem sucesso. Precisaremos restaurar o sistema para seguir.", "Essa é a nossa missão de emergência. Por favor, não falhe dessa vez. Pode ser a nossa última chance."]},
+        {
+            "id": "negado",
+            "msgs": [
+                ":("
+            ],
+            "options": [
+                {
+                    "text": "Ok, mudei de ideia, ajudo sim."
+                }
+            ]
+        }
+]

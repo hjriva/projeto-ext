@@ -1,0 +1,47 @@
+.campo {
+    margin: 5px;
+}
+
+
+.novo {
+       background-color: rgb(202, 199, 199);
+    padding: 5px;
+    border-radius: 8px;
+    display: flex
+;
+    flex-direction: row;
+    width: min-content;
+    margin: 2px;
+}
+
+.excluir-novo {
+    display: inline;
+    cursor: pointer;
+    margin: 2px 0px 2px 5px;
+}
+
+.excluir-novo:hover {
+    background-color: grey;
+    color: white;
+}
+
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24;
+  font-size: 15px !important;
+}
+
+
+#generos-escolhidos {
+    display: flex;
+}
+
+
+#add-pergunta {
+    cursor: pointer;
+}
+
