@@ -76,6 +76,41 @@ app.post('/novasubmissao', async (req, res) => {
 
 })
 
+
+
+//Mostrar opções de gen
+
+app.get('/opcoes_gen', async (req, res) => {
+
+   
+
+    try {
+     const generos = await db.query('SELECT * from genero;');
+
+     res.json(generos.rows)
+} catch (err) {
+    console.log('erro: '+  err)
+}
+} )
+
+
+app.post('/criandousuario', (req, res) => {
+    const {age: idade, email, exp, lvl, lvlPct, nome, pref} = req.body
+    try {
+        db.query('INSERT INTO usuario (id, nome, idade, lvl, lvlComplete, exp) VALUES ($1, $2, $3, $4, $5, $6)', [email, nome, idade, lvl, lvlPct, exp])
+
+
+        pref.forEach(p => {
+            db.query(`INSERT INTO PREFERENCIAS_POR_USUARIO (usuario_pref, genero_pref) VALUES ($1, $2)`, [email, p])
+        })
+
+    } catch (err) {
+        console.log('erro: '+  err)
+    }
+
+})
+
+
 app.listen(port, () => {
     console.log(`rodando bd na porta ${port}`)
 })

@@ -217,6 +217,10 @@ footer {
   background-color: #cfcfcf7c;
 }
 
+.chosen{
+  background-color: #cfcfcf7c !important;
+}
+
 #container-opcoes {
     grid-column: span 2;
     order: 1;
@@ -224,6 +228,7 @@ footer {
 ;
     flex-direction: row;
     justify-content: flex-start;
+        align-items: center;
 }
 
 .msg-usuario {
@@ -252,6 +257,11 @@ footer {
     display: flex
 ;
     flex-direction: column;
+}
+
+#instr_opc {
+  color: white;
+  cursor: pointer;
 }
 
 @media screen and (min-width: 1200px) {

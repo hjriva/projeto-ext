@@ -7,16 +7,22 @@ let bubbleUsuario = window.document.getElementById('send-message')
 
 let chatTotal = window.document.getElementById('caixa-chat')
 
+let email = 'abcd'
 
-function Usuario(email, nome, age, exp, lvl, pref) {
+
+function Usuario(email, nome, age, exp, lvl, lvlPct, pref) {
     this.email = email,
     this.nome = nome;
     this.age = age,
     this.exp = exp,
     this.lvl = lvl,
+    this.lvlPct = lvlPct,
     this.pref = pref
 
 }
+
+
+
 
 
 function Pref() {
@@ -132,7 +138,7 @@ iniciar_seq (seq_id) {
  }, 
  async cadastrarUsuario() {
     //pegar email da requisição do firebase e iniciar objeto
-      let UsuarioNovo = new Usuario(undefined, undefined, undefined, undefined, undefined, undefined)
+      let UsuarioNovo = new Usuario(email, undefined, undefined, undefined, 0, 0, undefined)
     UsuarioNovo["lvl"] = 0
 
     await this.iniciar_seq('inquire-1');
@@ -144,7 +150,66 @@ iniciar_seq (seq_id) {
     //await this.iniciar_seq("seq-cadastro1")  
 
     let escolha = await this.iniciar_seq("seq-cadastro1") 
-    UsuarioNovo["exp"] = escolha.params[0]   
+    UsuarioNovo["exp"] = escolha.params[0] 
+
+
+    let generosPref = []
+    
+    fetch("/opcoes_gen")
+        .then((res) => res.json())
+        .then((data) => { 
+           data.forEach(d =>  {
+
+                let opcao = document.createElement('span')
+                opcao.textContent = d.descr
+                opcao.classList.add('opcao-dialogo')
+
+                opcao.addEventListener('click', () => {
+                    opcao.classList.toggle('chosen')
+                })
+
+                contOptions.appendChild(opcao)
+           })
+
+
+
+            let instr = document.createElement('p')
+            instr.id = 'instr_opc'
+            instr.textContent = 'Selecione seus favoritos e clique aqui para finalizar!'
+
+            instr.addEventListener('click', () => {
+                let selecionados = document.querySelectorAll('.chosen')
+                //console.log('selecionados: ' + selecionados)
+                selecionados.forEach(s => {
+                    console.log('selecionados: ' + s.textContent)
+                    generosPref.push(s.textContent)
+                })
+                document.querySelectorAll('.opcao-dialogo').forEach(op => {
+                    op.remove()
+                    })
+                instr.remove()
+                MsgUsuario(generosPref.join(','))
+               
+                UsuarioNovo["pref"] = generosPref
+                AstronautCh.iniciar_seq('finaliza_cadastro')
+                console.log(UsuarioNovo)
+
+               
+               fetch('/criandousuario', {
+                    method: "POST",
+                    body: JSON.stringify(UsuarioNovo),
+                    headers: { "Content-type": "application/json; charset=UTF-8" }
+                })
+            
+
+                
+            })
+
+            contOptions.appendChild(instr)
+
+        })
+        
+    
     
     /*fazer requisição para puxar generos do banco de dados,
     cada um se torna um label clicável, precisa ter uma instrução de 
