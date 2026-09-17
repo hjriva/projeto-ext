@@ -105,9 +105,13 @@
 
 {
     "id": "nova-missao-1",
-    "msgs": ["Então, vamos ver se você vai conseguir me ajudar. Aqui vai o primeiro desafio. O livro que você precisa ler é: ", 
+    "msgs": ["Então, vamos ver se você vai conseguir me ajudar. O seu desafio é ler e responder perguntas sobre esse livro. ", 
             "Me avisa aí quando terminar de ler, que eu te mando as perguntas. É só falar comigo aqui no chat."
     ] 
+},
+{
+    "id": "nova-missao",
+    "msgs": ["Muito bem! Mas isso não é o fim. O computador ainda está fazendo perguntas que precisam ser respondidas. O próximo desafio é: ", "O esquema é o mesmo. Me avisa quando terminar de ler o livro."]
 },
     {
         "id": "missao-2",
@@ -115,7 +119,7 @@
     },
 
     {
-        "id": "missao-em-andamento",
+        "id": "missao-em-andamento2",
         "msgs": ["Olá! Como está progredindo em sua missão? Já terminou de ler o livro para responder as perguntas? Sem pressão, mas estamos ansiosos por aqui!"
         
         ],
@@ -179,6 +183,92 @@
             ],
             "command": "iniciar_seq",
             "params": ["inquire-2"]
-        }
-
+        },
+        {
+            "id": "sem-livros-disponiveis",
+            "msgs": [
+                "OK....", "Parece que atingimos um impasse. Nossos computadores identificaram que o sistema de segurança foi desativado... ", "Não há mais perguntas. Parabéns, você zerou as perguntas de segurança. Mas esse não é o fim.",
+                "Eu lhe deixarei saber quando tivermos mais missões."
+            ]
+        },
+        {
+  "id": "seq-retorno-sem-missao",
+  "msgs": [
+    "Obrigado por toda a ajuda até aqui.",
+    "Você está pronto para uma nova missão?"
+  ],
+  "options": [
+    { "texto": "Estou pronto.", "command": "iniciarNovaMissao" }
+  ]
+},
+{
+  "id": "missao-em-andamento",
+  "msgs": [
+    "Oi!", "Que bom te ver aqui.", "Como está indo na sua missão? Já terminou?"
+  ],
+  "options": [
+    { "texto": "Já terminei!", "command": null, "params": ["terminei"] },
+    { "texto": "Ainda estou lendo", "command": null, "params": ["ainda-lendo"] }
+  ]
+}, {
+  "id": "missao-terminada-sucesso",
+  "msgs": [
+    "Sim! Está tudo certo. Avançamos mais um pouco.",
+    "Mais uma vitória para sua lista."
+  ]
+},
+{
+  "id": "missao-terminada-erro",
+  "msgs": [
+    "Vamos ver...", "Oh, não. Nosso sistema identificou um erro. Alguma pergunta que você responder não está de acordo. Precisaremos tentar de novo."
+    
+  ]
+},
+{
+  "id": "seq-boas-vindas-volta",
+  "msgs": [
+    "Olá de novo!", "Que bom te ver por aqui."
+  ]
+},
+{
+  "id": "aguardando-leitura",
+  "msgs": [
+    "Sem problemas! Fico na torcida por aqui.",
+    "Quando quiser verificar de novo, é só clicar abaixo."
+  ],
+  "options": [
+    { "texto": "Verificar novamente", "command": "verificarMissao", "params": [] }
+  ]
+},
+{
+  "id": "missao-terminada-sucesso",
+  "msgs": [
+    "Sim! Está tudo certo. Avançamos mais um pouco.",
+    "Mais uma vitória para sua lista."
+  ],
+  "options": [
+    { "texto": "Estou pronto para a próxima missão.", "command": "iniciarNovaMissao", "params": [] }
+  ]
+},
+{
+  "id": "missao-terminada-erro",
+  "msgs": [
+    "Vamos ver...",
+    "Oh, não. Nosso sistema identificou um erro. Alguma pergunta que você respondeu não está de acordo. Precisaremos tentar de novo."
+  ],
+  "options": [
+    { "texto": "Tentar de novo agora", "command": null, "params": ["tentar-de-novo"] },
+    { "texto": "Tentar mais tarde", "command": null, "params": ["depois"] }
+  ]
+},
+{
+  "id": "missao-terminada-esgotada",
+  "msgs": [
+    "Poxa, dessa vez não deu certo — você usou suas 5 tentativas para esse livro.",
+    "Sem problemas! Vamos sortear outra missão pra você."
+  ],
+  "options": [
+    { "texto": "Sortear nova missão", "command": "iniciarNovaMissao", "params": [] }
+  ]
+}
 ]

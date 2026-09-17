@@ -1,22 +1,16 @@
-
-
 require('dotenv').config()
 const express = require('express')
-const session = require('express-session');
-const path = require('path');
+const path = require('path')
 const app = express()
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000
 
-const db = require('./connect_db');
+const db = require('./connect_db')
 
 app.use(express.json())
-
-
 app.use(express.static('public'))
 
 
-//rotas para arquivos
 
 app.get('/astronaut.js', (req, res) => {
     res.sendFile(path.join(__dirname, 'astronaut.js'))
@@ -30,8 +24,7 @@ app.get('/fb.js', (req, res) => {
     res.sendFile(path.join(__dirname, 'fb.js'))
 })
 
-//rotas para banco de dados interno
-
+/
 app.post('/novasubmissao', async (req, res) => {
     const { titulo, autor, idademin, idademax, generos, perguntas } = req.body
 
@@ -65,7 +58,6 @@ app.post('/novasubmissao', async (req, res) => {
         }
 
         res.json({ sucesso: true, livro_id })
-
     } catch (err) {
         console.log('erro em /novasubmissao: ' + err)
         res.status(500).json({ sucesso: false, erro: err.message })
@@ -73,58 +65,24 @@ app.post('/novasubmissao', async (req, res) => {
 })
 
 
-
-//Mostrar opções de genero - cadastro
-
 app.get('/opcoes_gen', async (req, res) => {
-
-   
-
     try {
-     const generos = await db.query('SELECT * from genero;');
-
-     res.json(generos.rows)
-} catch (err) {
-    console.log('erro: '+  err)
-}
-} )
-
-
-
-
-
-
-app.post('/criandousuario', (req, res) => {
-    const {age: idade, email, exp, lvl, lvlPct, nome, pref} = req.body
-    try {
-        db.query('INSERT INTO usuario (id, nome, idade, lvl, lvlComplete, exp) VALUES ($1, $2, $3, $4, $5, $6)', [email, nome, idade, lvl, lvlPct, exp])
-
-
-        pref.forEach(p => {
-            db.query(`INSERT INTO PREFERENCIAS_POR_USUARIO (usuario_pref, genero_pref) VALUES ($1, $2)`, [email, p])
-        })
-
+        const generos = await db.query('SELECT id, descr FROM genero;')
+        res.json(generos.rows)
     } catch (err) {
-        console.log('erro: '+  err)
+        console.log('erro: ' + err)
+        res.status(500).json({ erro: err.message })
     }
-
 })
 
 
-app.get('/sorteio_missão', async (req, res) => {
+app.get('/sorteio_missao', async (req, res) => {
+    const { generos, lidos } = req.query
 
-    const { usuario, lidos } = req.query
-
-    const arrayX = lidos ? lidos.split(',').map(Number) : []
+    const arrayLidos = lidos ? lidos.split(',').map(Number).filter(n => !isNaN(n)) : []
+    const arrayGeneros = generos ? generos.split(',').map(Number).filter(n => !isNaN(n)) : []
 
     try {
-        const prefs = await db.query(
-            'SELECT genero_pref FROM PREFERENCIAS_POR_USUARIO WHERE usuario_pref = $1',
-            [usuario]
-        )
-
-        const arrayY = prefs.rows.map(r => r.genero_pref)
-
         const resultado = await db.query(
             `WITH candidatos AS (
                 SELECT 
@@ -148,7 +106,7 @@ app.get('/sorteio_missão', async (req, res) => {
             FROM candidatos
             ORDER BY prioridade DESC, RANDOM()
             LIMIT 1;`,
-            [arrayX, arrayY]
+            [arrayLidos, arrayGeneros]
         )
 
         if (resultado.rows.length === 0) {
@@ -156,14 +114,30 @@ app.get('/sorteio_missão', async (req, res) => {
         }
 
         res.json(resultado.rows[0])
-
     } catch (err) {
-        console.log('erro em /sorteio_missão: ' + err)
-        res.status(500).json({ sucesso: false, erro: err.message })
+        console.log('erro em /sorteio_missao: ' + err)
+        res.status(500).json({ erro: err.message })
     }
 })
 
 
-app.listen(3000, () => console.log('Servidor rodando na porta 3000'));
+app.get('/perguntas/:livroId', async (req, res) => {
+    const { livroId } = req.params
 
+    try {
+        const resultado = await db.query(
+            `SELECT id, enunciado, alternativas, explicacao 
+             FROM perguntas 
+             WHERE livro_id = $1 
+             ORDER BY RANDOM() 
+             LIMIT 5;`,
+            [livroId]
+        )
+        res.json(resultado.rows)
+    } catch (err) {
+        console.log('erro em /perguntas: ' + err)
+        res.status(500).json({ erro: err.message })
+    }
+})
 
+app.listen(3000, () => console.log(`Servidor rodando na porta 3000`))
