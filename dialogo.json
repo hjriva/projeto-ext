@@ -25,8 +25,8 @@
         },{
        "texto": "Sim",
 
-            "command": "iniciar_seq",
-           "params": ["inquire-email"] 
+            "command": "cadastrarUsuario",
+           "params": [] 
         
     }]
 },  {
@@ -35,9 +35,7 @@
     "msgs": [
         "Hmmmm. Ok. Espero que esteja certinho.",
         "Você vai receber um link por e-mail. Por favor, clique nele. Não esqueça de olhar o spam!"
-    ], 
-    "command": "cadastrarUsuario",
-    "params": []
+    ]
 
 },
 
@@ -55,7 +53,7 @@
 {
     "id": "inquire-1",
     "msgs": [
-        "Oh, obrigado por voltar! Só preciso coletar algumas informações, antes de começarmos",
+        "Só preciso coletar algumas informações, antes de começarmos",
         "Qual é o seu nome? Digite abaixo, por favor."
     ]
 },
@@ -90,8 +88,7 @@
     "id": "seq-cadastro2",
     "msgs": [
         "E será que você consegue me ajudar?", "Que tipo de coisas você já leu e gostou antes?"
-    ],
-    "options": ""
+    ]
 }, {
     "id": "seq-cadastro3", 
     "msgs": [

@@ -11,5 +11,5 @@ msg.addEventListener('mouseleave', () => {
 })
 
 msg.addEventListener('click', () => {
-    window.location.href = 'chatinicial.html'
+    window.location.href = 'homepage.html'
 })

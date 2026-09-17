@@ -199,7 +199,7 @@ geninput.addEventListener('keydown', function(event) {
 
        // perguntas.forEach(q => {console.log(q); q.alternativas.forEach(a => console.log(a))})
 
-        let PerguntasBd = JSON.stringify(perguntas)
+        //let PerguntasBd = JSON.stringify(perguntas)
 
 
         fetch("/novasubmissao", {
@@ -210,7 +210,7 @@ geninput.addEventListener('keydown', function(event) {
                 idademin: idademin,
                 idademax: idademax,
                 generos: generos,
-                perguntas: PerguntasBd
+                perguntas: perguntas
             }),
             headers: { "Content-type": "application/json; charset=UTF-8" }
         })

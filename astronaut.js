@@ -1,3 +1,6 @@
+
+
+
 let msgBox = window.document.getElementById('caixa-msgs')
 let enviarBox = window.document.getElementById('caixa-enviar')
 let contOptions= window.document.getElementById('container-opcoes')
@@ -7,17 +10,23 @@ let bubbleUsuario = window.document.getElementById('send-message')
 
 let chatTotal = window.document.getElementById('caixa-chat')
 
+
 let email = 'abcd'
 
 
-function Usuario(email, nome, age, exp, lvl, lvlPct, pref) {
+function Usuario(email, nome, age, exp, lvl, lvlPct, pref, lidos, missaoAtual) {
     this.email = email,
     this.nome = nome;
     this.age = age,
     this.exp = exp,
     this.lvl = lvl,
     this.lvlPct = lvlPct,
-    this.pref = pref
+    this.pref = pref, 
+    this.lidos = lidos,
+    this.missaoAtual = missaoAtual
+    //nome do livro sorteado, quando a missão é finalizada, o objeto é esvaziado e é colocado o novo livro sorteado
+    //tambem precisa guardar o numero de tentativas da missão atual (começa com 0, 
+    // depois vai somando o numero de tentativas)
 
 }
 
@@ -32,7 +41,7 @@ function Pref() {
 
 const AstronautCh = {
     name: 'Major Tom',
-    profilepic: 'public/astronauta.png',
+    profilepic: 'public/astronauta2.png',
 
 
 iniciar_seq (seq_id) { 
@@ -51,7 +60,7 @@ iniciar_seq (seq_id) {
     msgsContainer.classList.add('msgs-Container')
 
     let profilepic = document.createElement('img')
-    profilepic.setAttribute('src', 'astronauta.png')
+    profilepic.setAttribute('src', 'astronauta2.png')
     profilepic.classList.add('profile-pic')
 
     picContainer.appendChild(profilepic)
@@ -125,27 +134,34 @@ iniciar_seq (seq_id) {
             mostrarMsg(0)
             //chatTotal.scrollHeight;
         })
+        .catch(err => {
+        console.error('Erro ao buscar/parsear dialogo.json:', err)
+        resolve() 
+    })// evita travar a Promise para sempre
 
-    })   },
- mail_input () {
-    enviarIcon.addEventListener('click', () => {
-        let email = bubbleUsuario.value
-        MsgUsuario(email)
-        //colocar aqui a requisição para o firebase enviar link de cadastro por e-mail
-        bubbleUsuario.value = ''
-        AstronautCh.iniciar_seq('link-email')
+    })      
+        
+},
+    
+
+sendMsg() {
+    enviarIcon.addEventListener('click', (input) => {
+        MsgUsuario(input)
     }, { once: true })
- }, 
+},
  async cadastrarUsuario() {
     //pegar email da requisição do firebase e iniciar objeto
-      let UsuarioNovo = new Usuario(email, undefined, undefined, undefined, 0, 0, undefined)
+    let UsuarioNovo = new Usuario(email, undefined, undefined, undefined, 0, 0, undefined, [])
     UsuarioNovo["lvl"] = 0
+    
 
+    console.log('cadastrarUsuario')
+ 
     await this.iniciar_seq('inquire-1');
     await this.CapturarValor(UsuarioNovo, "nome", false)
 
    await this.iniciar_seq('inquire-2');
-    await this.CapturarValor(UsuarioNovo, "age", true)
+await this.CapturarValor(UsuarioNovo, "age", true)
 
     //await this.iniciar_seq("seq-cadastro1")  
 
@@ -155,7 +171,7 @@ iniciar_seq (seq_id) {
 
     let generosPref = []
     
-    fetch("/opcoes_gen")
+   fetch("/opcoes_gen")
         .then((res) => res.json())
         .then((data) => { 
            data.forEach(d =>  {
@@ -194,13 +210,12 @@ iniciar_seq (seq_id) {
                 AstronautCh.iniciar_seq('finaliza_cadastro')
                 console.log(UsuarioNovo)
 
+                localStorage.setItem("usuarioSalvo", UsuarioNovo);
                
-               fetch('/criandousuario', {
-                    method: "POST",
-                    body: JSON.stringify(UsuarioNovo),
-                    headers: { "Content-type": "application/json; charset=UTF-8" }
-                })
-            
+                console.log(localStorage(getItem("usuarioSalvo")))
+                    
+                .fetch("/sorteio_missão")
+                .then((res))
 
                 
             })
@@ -233,7 +248,7 @@ iniciar_seq (seq_id) {
 
     a cada pergunta, o astronauta envia uma mensagem com as perguntas e opções
     o usuario precisa digitar SOMENTE a letra correspondente
-    uma pergunta atras da outra, depois verifica se todas estão certas
+    uma pergunta atras da outra no modal, depois verifica se todas estão certas
 
     se estão, a missão é concluída
     cada vez que uma missão é concluída, puxa uma função para verificar se alguma conquista foi atingida
@@ -282,6 +297,7 @@ async avaliarEscolha(valor) {
 },
 
  
+
   
 }
 
