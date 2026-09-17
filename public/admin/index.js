@@ -5,14 +5,26 @@ let bubbleUsuario = window.document.getElementById('send-message')
 let chatTotal = window.document.getElementById('caixa-chat')
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    console.log('1 - DOM CARREGADO')
+
     const usuarioSalvo = localStorage.getItem('usuarioSalvo')
 
-   if (usuarioSalvo !== null) {
-  
-  AstronautCh.retomarSessao(usuarioSalvo)
-} else {
-  AstronautCh.iniciar_seq('seq-inicial')
-}
+    console.log('2 - USUARIO SALVO:', usuarioSalvo)
+    console.log('3 - seqMsgs:', seqMsgs)
+
+    if (usuarioSalvo !== null) {
+
+        console.log('4 - VAI RETOMAR')
+        AstronautCh.retomarSessao(usuarioSalvo)
+
+    } else {
+
+        console.log('4 - VAI INICIAR')
+        AstronautCh.iniciar_seq('seq-inicial')
+
+    }
+
 })
 
 const observador = new MutationObserver(() => {

@@ -1,3 +1,5 @@
+console.log('ASTRONAUT.JS FOI CARREGADO')
+
 let modalQuiz = window.document.getElementById('modal-quiz')
 let quizProgresso = window.document.getElementById('quiz-progresso')
 let quizTentativas = window.document.getElementById('quiz-tentativas')
@@ -412,11 +414,20 @@ const AstronautCh = {
 
 
     async retomarSessao(usuarioSalvoJSON) {
-        console.log('retomarSessao')
-        usuarioAtual = JSON.parse(usuarioSalvoJSON)
-        await this.iniciar_seq('seq-boas-vindas-volta') 
-        await this.verificarMissao()
-    },
+    console.log('5 - RETOMAR SESSAO')
+
+    usuarioAtual = JSON.parse(usuarioSalvoJSON)
+
+    console.log('6 - usuarioAtual:', usuarioAtual)
+
+    await this.iniciar_seq('seq-boas-vindas-volta')
+
+    console.log('7 - terminou iniciar_seq')
+
+    await this.verificarMissao()
+
+    console.log('8 - terminou verificarMissao')
+},
 }
 
 export default AstronautCh

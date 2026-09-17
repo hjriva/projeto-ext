@@ -24,7 +24,7 @@ app.get('/fb.js', (req, res) => {
     res.sendFile(path.join(__dirname, 'fb.js'))
 })
 
-/
+
 app.post('/novasubmissao', async (req, res) => {
     const { titulo, autor, idademin, idademax, generos, perguntas } = req.body
 
