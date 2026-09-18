@@ -272,7 +272,7 @@ const AstronautCh = {
         usuarioAtual.missaoAtual = { ...livro, tentativas: 0, status: 'em-andamento' }
         salvarUsuario(usuarioAtual)
 
-        mostrarMensagemAvulsa(`${livro.titulo} — ${livro.autor}`, livro.capa)
+        mostrarMensagemAvulsa(`${livro.titulo} — ${livro.autor}`, `/${livro.capa}`)
         await this.iniciar_seq('nova-missao-1')
 
         await this.verificarMissao()  
