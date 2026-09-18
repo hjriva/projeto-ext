@@ -1,4 +1,4 @@
-console.log('ASTRONAUT.JS FOI CARREGADO')
+
 
 let modalQuiz = window.document.getElementById('modal-quiz')
 let quizProgresso = window.document.getElementById('quiz-progresso')
@@ -148,7 +148,7 @@ const AstronautCh = {
 
                         let m = sequencia.msgs[index]
                         if (m) {
-                            let tempo = m.length * 1
+                            let tempo = m.length * 8
                             setTimeout(() => {
                                 let novaMsg = document.createElement('div')
                                 novaMsg.classList.add('msg-bubble')
@@ -279,49 +279,71 @@ const AstronautCh = {
     },
 
   
-      async verificarMissao() {
+async verificarMissao() {
+    console.log('ENTROU NO VERIFICAR MISSAO')
+    console.log('missaoAtual:', usuarioAtual.missaoAtual)
+
     if (!usuarioAtual.missaoAtual) {
+        console.log('SEM MISSÃO')
         await this.iniciar_seq('seq-retorno-sem-missao')
         return
     }
 
     if (usuarioAtual.missaoAtual.quiz) {
+        console.log('QUIZ JÁ EXISTE')
         await this.continuarQuiz()
         return
     }
 
+    console.log('QUIZ NÃO EXISTE, ABRINDO MISSÃO EM ANDAMENTO')
+
     const escolha = await this.iniciar_seq('missao-em-andamento')
 
+    console.log('ESCOLHA RECEBIDA:', escolha)
+    console.log('PARAM RECEBIDO:', escolha?.params?.[0])
+
     if (escolha?.params?.[0] === 'terminei') {
+        console.log('ENTROU NO TERMinEI')
         await this.continuarQuiz()
     } else if (escolha?.params?.[0] === 'ainda-lendo') {
+        console.log('ENTROU NO AINDA LENDO')
         await this.iniciar_seq('aguardando-leitura')
     }
 },
 
-    async continuarQuiz() {
-        await this.rodarQuiz()
+  
+async continuarQuiz() {
+    console.log('ENTROU NO CONTINUAR QUIZ')
 
-        while (usuarioAtual.missaoAtual.quiz.indiceAtual < usuarioAtual.missaoAtual.quiz.perguntas.length) {
-            await this.mostrarPerguntaAtual()
-        }
+    await this.rodarQuiz()
 
-        await this.finalizarQuiz()
-    },
+    console.log('SAIU DO RODAR QUIZ')
+    console.log('indiceAtual:', usuarioAtual.missaoAtual.quiz.indiceAtual)
+    console.log('total perguntas:', usuarioAtual.missaoAtual.quiz.perguntas.length)
 
-       async rodarQuiz() {
-        const missao = usuarioAtual.missaoAtual
-
-       
-        if (!missao.quiz) {
-            const perguntas = await fetch(`/perguntas/${missao.id}`).then(r => r.json())
-            missao.quiz = { perguntas, indiceAtual: 0, acertos: 0 }
-            salvarUsuario(usuarioAtual)
-        }
-
-        modalQuiz.style.display = 'flex'
+    while (usuarioAtual.missaoAtual.quiz.indiceAtual < usuarioAtual.missaoAtual.quiz.perguntas.length) {
         await this.mostrarPerguntaAtual()
-    },
+        console.log('respondeu pergunta, indiceAtual:', usuarioAtual.missaoAtual.quiz.indiceAtual)
+    }
+
+    console.log('TERMINOU TODAS AS PERGUNTAS')
+    await this.finalizarQuiz()
+    console.log('TERMINOU FINALIZAR QUIZ')
+}
+
+,
+
+async rodarQuiz() {
+    const missao = usuarioAtual.missaoAtual
+
+    if (!missao.quiz) {
+        const perguntas = await fetch(`/perguntas/${missao.id}`).then(r => r.json())
+        missao.quiz = { perguntas, indiceAtual: 0, acertos: 0 }
+        salvarUsuario(usuarioAtual)
+    }
+
+    modalQuiz.style.display = 'flex'
+},
 
     mostrarPerguntaAtual() {
         return new Promise((resolve) => {
@@ -374,28 +396,42 @@ const AstronautCh = {
         })
     },
 
-    async finalizarQuiz() {
+
+async finalizarQuiz() {
+    console.log('1 - ENTROU NO FINALIZAR QUIZ')
+
     const missao = usuarioAtual.missaoAtual
     const quiz = missao.quiz
     const passou = quiz.acertos === quiz.perguntas.length
 
+    console.log('2 - acertos:', quiz.acertos)
+    console.log('3 - perguntas:', quiz.perguntas.length)
+    console.log('4 - passou:', passou)
+
     modalQuiz.style.display = 'none'
 
     if (passou) {
-        usuarioAtual.lidos.push(missao.id)
-        usuarioAtual.exp += 10
-        usuarioAtual.missaoAtual = null
-        salvarUsuario(usuarioAtual)
+    usuarioAtual.lidos.push(missao.id)
+    usuarioAtual.exp += 10
+    usuarioAtual.missaoAtual = null
+    salvarUsuario(usuarioAtual)
 
-        await this.iniciar_seq('missao-terminada-sucesso')
-        return
-    }
+    console.log('5 - PASSOU NO QUIZ')
+
+    await this.iniciar_seq('missao-terminada-sucesso')
+    await this.iniciarNovaMissao()
+
+    return
+}
+    console.log('5 - ERRO NO QUIZ')
 
     missao.tentativas++
     missao.quiz = null
     salvarUsuario(usuarioAtual)
 
     const tentativasRestantes = 5 - missao.tentativas
+
+    console.log('6 - tentativas restantes:', tentativasRestantes)
 
     if (tentativasRestantes <= 0) {
         usuarioAtual.missaoAtual = null
@@ -405,9 +441,15 @@ const AstronautCh = {
     }
 
     mostrarMensagemAvulsa(`Você ainda tem ${tentativasRestantes} tentativa(s) para essa missão.`)
+
+    console.log('7 - chamando missao-terminada-erro')
+
     const escolha = await this.iniciar_seq('missao-terminada-erro')
 
+    console.log('8 - escolha:', escolha)
+
     if (escolha?.params?.[0] === 'tentar-de-novo') {
+        console.log('9 - tentando novamente')
         await this.continuarQuiz()
     }
 },
